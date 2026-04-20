@@ -78,91 +78,92 @@ const Register = () => {
   };
 
   return (
-    <main className="auth d-flex justify-content-center align-items-center min-vh-100 p-3">
+    <main className="futuristic-bg d-flex justify-content-center align-items-center min-vh-100 p-3">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="card w-100 p-4 p-md-5 border-light shadow-sm rounded-4"
-        style={{ maxWidth: "440px" }}
+        transition={{ duration: 0.6, cubicBezier: [0.22, 1, 0.36, 1] }}
+        className="glass-card w-100 p-4 p-md-5 shadow-lg position-relative z-1"
+        style={{ maxWidth: "480px" }}
       >
-        <div className="text-center mb-4">
-          {/* Logo */}
-          <div className="d-flex justify-content-center align-items-center mb-3">
-            <div>
-              {" "}
-              <img
-                src={logo}
-                alt=""
-              />
-            </div>
-          </div>
+        <div className="text-center mb-5">
+          {/* Logo with slight animation */}
+          <motion.div
+            whileHover={{ rotate: -10, scale: 1.1 }}
+            className="d-flex justify-content-center align-items-center mb-4"
+          >
+            <img src={logo} alt="Note App Logo" style={{ width: "120px" }} />
+          </motion.div>
 
-          <Title level={3} className="fw-bold text-dark mb-1 fs-4">
-            Create an account
+          <Title level={2} className="fw-bold text-dark mb-2" style={{ letterSpacing: "-0.5px" }}>
+            Create Account
           </Title>
-          <Text type="secondary" className="small text-muted">
-            Please fill in the details to register
+          <Text type="secondary" className="fs-6 opacity-75">
+            Join our community and start organizing your life
           </Text>
         </div>
 
-        <Form layout="vertical" size="large">
-          <Form.Item
-            label={<span className="fw-normal text-secondary">Name:</span>}
-          >
-            <Input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={state.name}
-              onChange={handleChange}
-              className="rounded-3 bg-light py-2"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label={
-              <span className="fw-normal text-secondary">Email Address:</span>
-            }
-          >
-            <Input
-              type="email"
-              name="email"
-              placeholder="email@example.com"
-              value={state.email}
-              onChange={handleChange}
-              className="rounded-3 bg-light py-2"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label={<span className="fw-normal text-secondary">Password:</span>}
-          >
-            <Input.Password
-              name="password"
-              placeholder="********"
-              value={state.password}
-              onChange={handleChange}
-              className="rounded-3 bg-light py-2"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label={
-              <span className="fw-normal text-secondary">
-                Confirm Password:
-              </span>
-            }
-            className="mb-4"
-          >
-            <Input.Password
-              name="confirmPassword"
-              placeholder="********"
-              value={state.confirmPassword}
-              onChange={handleChange}
-              className="rounded-3 bg-light py-2"
-            />
-          </Form.Item>
+        <Form layout="vertical" size="large" onFinish={handleSubmit}>
+          <Row gutter={16}>
+            <Col xs={24}>
+              <Form.Item
+                label={<span className="fw-medium text-secondary small text-uppercase">Full Name</span>}
+                className="mb-3"
+              >
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  value={state.name}
+                  onChange={handleChange}
+                  className="auth-input rounded-3 py-2 px-3"
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24}>
+              <Form.Item
+                label={<span className="fw-medium text-secondary small text-uppercase">Email Address</span>}
+                className="mb-3"
+              >
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="name@company.com"
+                  value={state.email}
+                  onChange={handleChange}
+                  className="auth-input rounded-3 py-2 px-3"
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                label={<span className="fw-medium text-secondary small text-uppercase">Password</span>}
+                className="mb-3"
+              >
+                <Input.Password
+                  name="password"
+                  placeholder="••••••••"
+                  value={state.password}
+                  onChange={handleChange}
+                  className="auth-input rounded-3 py-2 px-3"
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                label={<span className="fw-medium text-secondary small text-uppercase">Confirm</span>}
+                className="mb-4"
+              >
+                <Input.Password
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  value={state.confirmPassword}
+                  onChange={handleChange}
+                  className="auth-input rounded-3 py-2 px-3"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item className="mb-0">
             <Button
@@ -171,22 +172,26 @@ const Register = () => {
               loading={isProcessing}
               block
               onClick={handleSubmit}
-              className="rounded-3 fw-bold fs-6 border-0 py-2"
-              style={{ backgroundColor: "#9333ea", height: "46px" }}
+              className="glow-button rounded-3 fw-bold fs-6 border-0 py-2"
+              style={{
+                backgroundColor: "#9333ea",
+                height: "52px",
+                fontSize: "1.1rem"
+              }}
             >
-              Sign Up
+              Get Started
             </Button>
           </Form.Item>
         </Form>
 
-        <div className="text-center mt-4">
-          <Text className="small text-muted">
+        <div className="text-center mt-5 pt-4 border-top border-light opacity-75">
+          <Text className="small text-secondary">
             Already have an account?{" "}
             <Link
               to="/auth/login"
-              className="text-primary fw-bold text-decoration-none"
+              className="text-primary fw-bold text-decoration-none ms-1"
             >
-              Login
+              Sign In
             </Link>
           </Text>
         </div>

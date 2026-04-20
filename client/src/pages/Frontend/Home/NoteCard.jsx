@@ -110,11 +110,11 @@ const NoteCard = ({ note, onRefresh }) => {
   return (
     <>
       <motion.div
-        whileHover={{ y: -4, boxShadow: "0 10px 20px rgba(0,0,0,0.05)" }}
-        className="card border-0 shadow-sm rounded-4 h-100 overflow-hidden"
+        whileHover={{ y: -4 }}
+        className="glass-card shadow-sm h-100 overflow-hidden"
         style={{ transition: "all 0.3s ease" }}
       >
-        <div className="card-body p-4 d-flex flex-column bg-white">
+        <div className="card-body p-4 d-flex flex-column bg-transparent">
           <div className="d-flex justify-content-between align-items-start mb-3">
             <h5
               className="card-title fw-bold text-dark text-truncate mb-0"

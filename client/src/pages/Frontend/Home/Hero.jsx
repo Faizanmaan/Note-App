@@ -91,22 +91,22 @@ const Hero = ({ activeCategory = "all", searchTerm = "" }) => {
   };
 
   return (
-    <div className="p-4 p-md-5 bg-light min-vh-100">
+    <div className="p-4 p-md-5 mt-5">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom pb-4 mb-4 gap-3 bg-white p-4 rounded-4 shadow-sm"
+        className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom pb-4 mb-4 gap-3 px-2"
       >
         <div>
           <h2 className="fw-bold mb-1 text-dark">My Notes</h2>
-          <p className="text-muted mb-0">Manage and organize your daily tasks and ideas securely.</p>
+          <p className="text-muted mb-0 small opacity-75">Manage and organize your daily tasks and ideas securely.</p>
         </div>
         <Button 
           type="primary" 
           size="large" 
           onClick={() => setIsModalOpen(true)}
-          className="rounded-3 shadow-sm px-4 fw-medium" 
+          className="rounded-3 shadow-nm px-4 fw-medium glow-button" 
           style={{ backgroundColor: "#9333ea", border: "none" }}
         >
           + New Note

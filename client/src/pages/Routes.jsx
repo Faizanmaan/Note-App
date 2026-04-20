@@ -23,10 +23,6 @@ const Index = () => {
           path="/auth/*"
           element={isAuth ? <Navigate to="/" replace /> : <Auth />}
         />
-        <Route
-          path="/setting/*"
-          element={isAuth ? <Setting /> : <Navigate to="/auth/login" replace />}
-        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

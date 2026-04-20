@@ -1,13 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Menu, Badge } from "antd";
+import React, { useState, useEffect } from "react";
+import { Menu, Badge, Button } from "antd";
+import { CiCircleRemove } from "react-icons/ci";
 import axios from "axios";
 import { useAuth } from "../../../context/Auth";
 import { useSocket } from "../../../context/SocketContext";
+import { useUI } from "../../../context/UIContext";
 
 const Sidebar = ({ activeCategory, setActiveCategory }) => {
   const [counts, setCounts] = useState({ all: 0, shared: 0, favorites: 0 });
   const { user } = useAuth();
   const { socket } = useSocket() || {};
+  const { closeSidebar } = useUI();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchCounts = async () => {
     try {
@@ -91,24 +101,30 @@ const Sidebar = ({ activeCategory, setActiveCategory }) => {
   ];
 
   return (
-    <div
-      className="h-100 bg-white border-end"
-      style={{ width: "260px", overflowY: "hidden" }}
-    >
-      <div className="p-3">
+    <div className="glass-sidebar shadow-lg border-0 d-flex flex-column">
+      <div className="p-4 flex-grow-1">
         <h6
-          className="text-primary fw-bold mb-3 px-3 small text-uppercase"
-          style={{ letterSpacing: "1px" }}
+          className="text-primary fw-bold mb-4 px-2 small text-uppercase opacity-75"
+          style={{ letterSpacing: "1.5px", fontSize: "0.75rem" }}
         >
-          Categories
+          Workspace
         </h6>
         <Menu
           mode="inline"
           selectedKeys={[activeCategory]}
           onClick={(e) => setActiveCategory(e.key)}
-          items={items}
+          items={items.map(item => ({
+            ...item,
+            className: item.type === 'divider' ? '' : 'sidebar-item-futuristic'
+          }))}
           className="border-0 bg-transparent fw-medium"
         />
+      </div>
+      
+      <div className="p-4 mt-auto border-top border-light opacity-50 text-center">
+        <small className="text-secondary fw-medium" style={{ fontSize: '10px' }}>
+          VER 1.0.2 • FUTURISTIC
+        </small>
       </div>
     </div>
   );

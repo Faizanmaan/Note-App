@@ -64,72 +64,63 @@ const Login = () => {
   };
 
   return (
-    <main className="auth d-flex justify-content-center align-items-center min-vh-100 p-3">
+    <main className="futuristic-bg d-flex justify-content-center align-items-center min-vh-100 p-3">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="card w-100 p-4 p-md-5 border-light shadow-sm rounded-4"
+        transition={{ duration: 0.6, cubicBezier: [0.22, 1, 0.36, 1] }}
+        className="glass-card w-100 p-4 p-md-5 shadow-lg position-relative z-1"
         style={{ maxWidth: "440px" }}
       >
-        <div className="text-center mb-4">
-          {/* Logo */}
-          <div className="d-flex justify-content-center align-items-center mb-3">
-            <div>
-              {" "}
-              <img
-                src={logo}
-                alt=""
-              />
-            </div>
-          </div>
+        <div className="text-center mb-5">
+          {/* Logo with slight animation */}
+          <motion.div
+            whileHover={{ rotate: 10, scale: 1.1 }}
+            className="d-flex justify-content-center align-items-center mb-4"
+          >
+            <img src={logo} alt="Note App Logo" style={{ width: "120px" }} />
+          </motion.div>
 
-          <Title level={3} className="fw-bold text-dark mb-1 fs-4">
-            Welcome to Note
+          <Title level={2} className="fw-bold text-dark mb-2" style={{ letterSpacing: "-0.5px" }}>
+            Welcome Back
           </Title>
-          <Text type="secondary" className="small text-muted">
-            Please log in to continue
+          <Text type="secondary" className="fs-6 opacity-75">
+            Log in to access your digital workspace
           </Text>
         </div>
 
-        <Form layout="vertical" size="large">
+        <Form layout="vertical" size="large" onFinish={handleSubmit}>
           <Form.Item
-            label={
-              <span className="fw-normal text-secondary mb-0">
-                Email Address:
-              </span>
-            }
+            label={<span className="fw-medium text-secondary small text-uppercase">Email Address</span>}
             className="mb-3"
           >
             <Input
               type="email"
               name="email"
-              placeholder="email@example.com"
+              placeholder="name@company.com"
               value={state.email}
               onChange={handleChange}
-              className="rounded-3 bg-light py-2"
+              className="auth-input rounded-3 py-2 px-3"
             />
           </Form.Item>
 
-          <div className="d-flex w-100 align-items-center mb-1">
-            <span className="fw-normal text-secondary">Password:</span>
-
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <span className="fw-medium text-secondary small text-uppercase">Password</span>
             <Link
               to="/auth/forgot-password"
-              className="ms-auto text-primary text-decoration-underline"
-              style={{ fontSize: "12px" }}
+              className="small text-primary text-decoration-none fw-medium"
             >
-              Forgot?
+              Forgot Password?
             </Link>
           </div>
 
-          <Form.Item className="mb-4 w-100">
+          <Form.Item className="mb-4">
             <Input.Password
               name="password"
-              placeholder="********"
+              placeholder="••••••••"
               value={state.password}
               onChange={handleChange}
-              className="rounded-3 bg-light py-2"
+              className="auth-input rounded-3 py-2 px-3"
             />
           </Form.Item>
 
@@ -140,22 +131,26 @@ const Login = () => {
               loading={isProcessing}
               block
               onClick={handleSubmit}
-              className="rounded-3 fw-bold fs-6 border-0 py-2"
-              style={{ backgroundColor: "#9333ea", height: "46px" }}
+              className="glow-button rounded-3 fw-bold fs-6 border-0 py-2"
+              style={{
+                backgroundColor: "#9333ea",
+                height: "52px",
+                fontSize: "1.1rem"
+              }}
             >
-              Login
+              Sign In
             </Button>
           </Form.Item>
         </Form>
 
-        <div className="text-center mt-4 pt-4 border-top">
-          <Text className="small text-muted">
-            No account yet?{" "}
+        <div className="text-center mt-5 pt-4 border-top border-light opacity-75">
+          <Text className="small text-secondary">
+            Don't have an account yet?{" "}
             <Link
               to="/auth/register"
-              className="text-primary fw-bold text-decoration-none"
+              className="text-primary fw-bold text-decoration-none ms-1"
             >
-              Sign Up
+              Create Account
             </Link>
           </Text>
         </div>

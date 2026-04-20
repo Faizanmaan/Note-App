@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/Auth";
+import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../context/SocketContext";
+import { CiBellOn } from "react-icons/ci";
 import {
   Button,
   Card,
@@ -14,11 +17,8 @@ import {
   Popconfirm,
 } from "antd";
 import { QuestionCircleOutlined, LogoutOutlined } from "@ant-design/icons";
-import { CiBellOn } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketContext";
 import axios from "axios";
-import logo from "@/assets/logo.svg";
+import Header from "../../components/Header";
 
 const { Title, Text } = Typography;
 
@@ -151,27 +151,10 @@ const Setting = () => {
   );
 
   return (
-    <div
-      className="min-vh-100 bg-light"
-      style={{
-        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-        padding: "20px",
-      }}
-    >
-      <header>
-        <div className="container py-3">
-          <div className="row">
-            <div className="col text-center">
-              <img
-                src={logo}
-                alt="logo"
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="futuristic-bg min-vh-100">
+      <Header />
 
-      <div className="container">
+      <div className="container mt-5 pt-5">
         <div className="row">
           {/* Main Content Area */}
           <div className="col">
@@ -192,50 +175,6 @@ const Setting = () => {
                     day: "numeric",
                   })}
                 </Text>
-              </div>
-              <div className="d-flex align-items-center gap-3">
-                <Popover
-                  content={popoverContent}
-                  title={<span className="fw-bold fs-6">Notifications</span>}
-                  trigger="click"
-                  placement="bottomRight"
-                >
-                  <Badge count={unread} size="small" offset={[-5, 5]}>
-                    <Button
-                      icon={<CiBellOn className="fs-4 text-dark" />}
-                      shape="circle"
-                      className="ms-3 p-3 d-flex justify-content-center align-items-center shadow-sm border-0 bg-white"
-                    />
-                  </Badge>
-                </Popover>
-                <div className="d-flex align-items-center gap-2">
-                  <Avatar
-                    size={42}
-                    src={user.avatar}
-                    style={{ backgroundColor: "#9333ea" }}
-                    className="shadow-sm border-2 border-white"
-                  >
-                    {user.name ? user.name[0].toUpperCase() : "U"}
-                  </Avatar>
-                  <Popconfirm
-                    title="Logout"
-                    description="Are you sure you want to logout?"
-                    onConfirm={handleLogout}
-                    okText="Yes"
-                    cancelText="No"
-                    okButtonProps={{ danger: true }}
-                    icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-                  >
-                    <Button
-                      type="primary"
-                      danger
-                      icon={<LogoutOutlined />}
-                      className="d-flex align-items-center fw-bold border-0 px-2"
-                    >
-                      Logout
-                    </Button>
-                  </Popconfirm>
-                </div>
               </div>
             </header>
 

@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CiSettings, CiBellOn } from "react-icons/ci";
-import { Button, Badge, Popover, Avatar } from "antd";
+import { CiSettings, CiBellOn, CiMenuBurger, CiCircleRemove, CiLogout } from "react-icons/ci";
+import { Button, Badge, Popover, Avatar, Popconfirm } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useSocket } from "../../context/SocketContext";
 import { useAuth } from "../../context/Auth";
+import { useUI } from "../../context/UIContext";
 import axios from "axios";
 import logo from "@/assets/logo.svg";
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const { socket } = useSocket() || {};
-  const { isAuth } = useAuth();
+  const { isAuth, handleLogout } = useAuth();
+  const { openSidebar, closeSidebar, isSidebarVisible } = useUI();
   const navigate = useNavigate();
 
   const [notifications, setNotifications] = useState([]);
   const [unread, setUnread] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const fetchNotifs = async () => {
     try {
@@ -107,76 +124,103 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
   );
 
   return (
-    <>
-      <motion.nav
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="navbar navbar-expand-lg bg-body-tertiary py-3 sticky-top border-bottom border-light shadow-sm"
-      >
-        <div className="container">
-          <Link to="/" className="navbar-brand">
-            <img
+    <motion.nav
+      initial={{ y: -100, opacity: 0, x: "-50%" }}
+      animate={{ y: 0, opacity: 1, x: "-50%" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`navbar navbar-expand-lg floating-nav ${isScrolled ? "scrolled" : ""}`}
+    >
+      <div className="container-fluid p-0 d-flex align-items-center">
+        <div className="d-flex align-items-center me-auto">
+          {/* Mobile Sidebar Toggle Button - Only visible when < 786px and sidebar is hidden */}
+          {windowWidth < 992 && (
+            <Button
+              icon={isSidebarVisible ? <CiCircleRemove className="fs-4" /> : <CiMenuBurger className="fs-4" />}
+              shape="circle"
+              className="nav-btn-glass me-2 p-0 border-0"
+              style={{ width: "38px", height: "38px" }}
+              onClick={isSidebarVisible ? closeSidebar : openSidebar}
+            />
+          )}
+
+          <Link to="/" className="navbar-brand d-flex align-items-center">
+            <motion.img
+              whileHover={{ scale: 1.05 }}
               src={logo}
               alt="logo"
+              style={{ height: "30px", width: "auto" }}
             />
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link
-                  to="/"
-                  className="nav-link active fw-bold fs-5 mt-2 ms-4"
-                  aria-current="page"
-                >
-                  All Notes
-                </Link>
-              </li>
-            </ul>
-            <div className="d-flex align-items-center">
-              <input
-                className="form-control me-2 rounded-pill py-2 px-3 focus-ring focus-ring-primary bg-light border-0 shadow-sm"
-                type="search"
-                placeholder="Search by title or tags..."
-                style={{ width: "300px" }}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {isAuth && (
-                <Popover
-                  content={popoverContent}
-                  title={<span className="fw-bold fs-6">Notifications</span>}
-                  trigger="click"
-                  placement="bottomRight"
-                >
-                  <Badge count={unread} size="small" offset={[-5, 5]}>
-                    <Button
-                      icon={<CiBellOn className="fs-4 text-dark" />}
-                      shape="circle"
-                      className="ms-3 p-3 d-flex justify-content-center align-items-center shadow-sm border-0 bg-white"
-                    />
-                  </Badge>
-                </Popover>
-              )}
-              <Button
-                icon={<CiSettings className="fs-4 text-dark" />}
-                shape="circle"
-                className="ms-2 p-3 d-flex justify-content-center align-items-center border-0 bg-white shadow-sm"
-                onClick={() => navigate("/setting")}
-              />
-            </div>
+        </div>
+
+        <div className="ms-4 d-none d-lg-block">
+          <Link to="/" className="nav-link-futuristic text-decoration-none">
+            All Notes
+          </Link>
+        </div>
+
+        <div className="d-flex align-items-center ms-auto gap-3">
+          <div className="position-relative d-none d-md-block">
+            <input
+              className="form-control search-island rounded-pill py-2 px-4 shadow-none"
+              type="search"
+              placeholder="Search anything..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ width: "240px", fontSize: "14px" }}
+            />
+          </div>
+
+          <div className="d-flex align-items-center gap-2">
+            {isAuth && (
+              <Popover
+                content={popoverContent}
+                title={<span className="fw-bold fs-6">Notifications</span>}
+                trigger="click"
+                placement="bottomRight"
+              >
+                <Badge count={unread} size="small" offset={[-4, 4]}>
+                  <Button
+                    icon={<CiBellOn className="fs-4" />}
+                    shape="circle"
+                    className="nav-btn-glass p-0 border-0"
+                    style={{ width: "38px", height: "38px" }}
+                  />
+                </Badge>
+              </Popover>
+            )}
+
+            <Button
+              icon={<CiSettings className="fs-4" />}
+              shape="circle"
+              className="nav-btn-glass p-0 border-0"
+              style={{ width: "38px", height: "38px" }}
+              onClick={() => navigate("/setting")}
+            />
+
+            {isAuth && (
+              <Popconfirm
+                title="Logout"
+                description="Are you sure you want to logout?"
+                onConfirm={handleLogout}
+                okText="Yes"
+                cancelText="No"
+                okButtonProps={{ danger: true }}
+                icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                placement="bottomRight"
+              >
+                <Button
+                  icon={<CiLogout className="fs-4 text-danger" />}
+                  shape="circle"
+                  className="nav-btn-glass p-0 border-0"
+                  style={{ width: "38px", height: "38px" }}
+                />
+              </Popconfirm>
+            )}
           </div>
         </div>
-      </motion.nav>
-    </>
+      </div>
+    </motion.nav>
   );
 };
 export default Navbar;
