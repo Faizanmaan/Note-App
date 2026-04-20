@@ -1,0 +1,38 @@
+@import "scss/bootstrap";
+@import "scss/auth";
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+// Sidebar Hover Styles
+.ant-menu-item {
+  margin-block: 4px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease-in-out !important;
+
+  &:hover {
+    background-color: rgba(147, 51, 234, 0.1) !important;
+    color: #9333ea !important;
+    .ant-menu-title-content {
+      color: #9333ea !important;
+    }
+  }
+}
+
+.ant-menu-item-selected {
+  background-color: rgba(147, 51, 234, 0.15) !important;
+  color: #9333ea !important;
+  font-weight: 600 !important;
+}
+
+.ant-menu-item-active {
+    background-color: rgba(147, 51, 234, 0.1) !important;
+    color: #9333ea !important;
+}
