@@ -1,10 +1,21 @@
 {
-  "buildCommand": "cd client && npm run build",
+  "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "index.html"
     }
   ]
 }
